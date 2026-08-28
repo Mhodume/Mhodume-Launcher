@@ -97,9 +97,11 @@ public static class PresetStore
         if (!checkpoints.TryGetValue(map, out var points) || points.Count == 0)
             return null;
 
-        var preset = new Preset { Name = name, Map = map, Checkpoints = points };
-        FoldTimes(preset);
-        return preset;
+        // A new preset starts with no times. Folding the map's current splits
+        // would pull in whatever the last layout on this map recorded, and a
+        // complete-run best from a different number of checkpoints is exactly
+        // the wrong-looking global this avoids. Times build up as you run it.
+        return new Preset { Name = name, Map = map, Checkpoints = points };
     }
 
     /// <summary>

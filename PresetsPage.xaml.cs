@@ -134,6 +134,21 @@ public partial class PresetsPage : UserControl
         TrainNote.Text = "Loading its checkpoints and going to the map — needs training mode.";
     }
 
+    /// <summary>
+    /// Clears a preset's stored times. The folded best only ever improves, so a
+    /// wrong time set once — a layout that has since changed — would otherwise
+    /// stick; this is how you get rid of it and let the times rebuild.
+    /// </summary>
+    private void ResetTimes_Click(object sender, RoutedEventArgs e)
+    {
+        if (PresetList.SelectedItem is not Preset preset) return;
+        preset.SectionBests.Clear();
+        preset.GlobalBestSeconds = null;
+        PresetStore.Save(_presets);
+        PresetList_SelectionChanged(this, null!);
+        TrainNote.Text = "Times cleared — they rebuild as you run.";
+    }
+
     private void Delete_Click(object sender, RoutedEventArgs e)
     {
         if (PresetList.SelectedItem is not Preset preset) return;

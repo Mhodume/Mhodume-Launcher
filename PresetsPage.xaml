@@ -111,6 +111,8 @@
                         <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                             <Button x:Name="TrainButton" Content="Train this preset"
                                     Padding="16,7" Click="Train_Click"/>
+                            <Button x:Name="ResetTimesButton" Content="Reset times"
+                                    Margin="8,0,0,0" Padding="14,7" Click="ResetTimes_Click"/>
                             <Button x:Name="DeleteButton" Content="Delete" Margin="8,0,0,0"
                                     Padding="14,7" Click="Delete_Click"/>
                         </StackPanel>
