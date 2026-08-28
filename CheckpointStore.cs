@@ -101,6 +101,24 @@ public static class CheckpointStore
         return maps;
     }
 
+    /// <summary>
+    /// The best complete run per map — first checkpoint to last, one continuous
+    /// run — written by the mod as a "G" line. A preset reads this as its
+    /// global best time.
+    /// </summary>
+    public static Dictionary<string, double> ReadRunBests()
+    {
+        var maps = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
+        foreach (var (map, line) in ReadLines(SplitsPath))
+        {
+            if (!line.StartsWith("G ")) continue;
+            if (double.TryParse(line[2..].Trim(), NumberStyles.Float,
+                                CultureInfo.InvariantCulture, out var g) && g >= 0)
+                maps[map] = g;
+        }
+        return maps;
+    }
+
     /// <summary>Times per map, indexed by section number.</summary>
     public static Dictionary<string, Dictionary<int, (double? Best, double? Prev, double? Last)>> ReadSplits()
     {
