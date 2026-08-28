@@ -1,7 +1,9 @@
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Threading;
 
 namespace Mhodume;
 
@@ -48,6 +50,9 @@ public sealed class Overlay
     private static extern IntPtr GetForegroundWindow();
 
     [DllImport("user32.dll")]
+    private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+
+    [DllImport("user32.dll")]
     private static extern bool SetForegroundWindow(IntPtr hWnd);
 
     private const int GWL_EXSTYLE = -20;
@@ -69,6 +74,14 @@ public sealed class Overlay
     private IntPtr _previous;
     private bool _registered;
     private double _opacity = 1.0;
+    private DispatcherTimer? _foreground;
+
+    /// <summary>
+    /// The game whose foreground the overlay is allowed to sit over. While
+    /// anything else is in front — another app you alt-tabbed to — the overlay
+    /// hides, so it never floats over things it has nothing to do with.
+    /// </summary>
+    public string GameProcessName { get; set; } = "VHOLUME-Win64-Shipping";
 
     /// <summary>What the key was, so the app can say so when it could not take it.</summary>
     public string KeyName { get; private set; } = "";
@@ -102,7 +115,43 @@ public sealed class Overlay
         _window.Closing += (_, _) =>
         {
             if (_registered) UnregisterHotKey(_handle, HOTKEY_ID);
+            _foreground?.Stop();
         };
+
+        // Watch who is in front. Topmost alone keeps the window over every
+        // application, not just the game, so an alt-tab to a browser or Discord
+        // leaves it hanging over them. This hides it whenever the thing in
+        // front is neither the game nor the overlay itself.
+        _foreground = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(250) };
+        _foreground.Tick += (_, _) => CheckForeground();
+        _foreground.Start();
+    }
+
+    private void CheckForeground()
+    {
+        if (!_window.IsVisible) return;
+
+        var fg = GetForegroundWindow();
+        if (fg == _handle) return;               // the overlay has focus; fine
+
+        if (OwnedByGame(fg)) return;             // the game is in front; fine
+
+        // Something else is in front. Step out of its way.
+        Hide();
+    }
+
+    private bool OwnedByGame(IntPtr hwnd)
+    {
+        if (hwnd == IntPtr.Zero) return false;
+        try
+        {
+            GetWindowThreadProcessId(hwnd, out var pid);
+            if (pid == 0) return false;
+            using var p = Process.GetProcessById((int)pid);
+            return string.Equals(p.ProcessName, GameProcessName,
+                                 StringComparison.OrdinalIgnoreCase);
+        }
+        catch { return false; }
     }
 
     private IntPtr OnMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
