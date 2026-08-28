@@ -20,5 +20,7 @@ public static class PresetActions
     {
         CheckpointStore.SetMapCheckpoints(preset.Map, preset.Checkpoints);
         CheckpointStore.ClearMapSplits(preset.Map);
+        // This preset now owns the map's times until another is loaded.
+        PresetStore.SetActive(preset.Id);
     }
 }

@@ -93,10 +93,14 @@ public partial class PresetsPage : UserControl
             return;
         }
 
-        // A preset shows the freshest times: fold in whatever the mod has for
-        // its map since it was last opened, in case a run has happened.
-        PresetStore.FoldTimes(preset);
-        PresetStore.Save(_presets);
+        // Fold in the mod's fresh times only for the preset that is actually
+        // loaded: two presets on one map share the map's splits, so folding for
+        // an unloaded one would hand it the loaded one's times.
+        if (preset.Id == PresetStore.ActiveId())
+        {
+            PresetStore.FoldTimes(preset);
+            PresetStore.Save(_presets);
+        }
 
         EmptyDetail.Visibility = Visibility.Collapsed;
         Detail.Visibility = Visibility.Visible;

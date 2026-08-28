@@ -75,6 +75,30 @@ public static class PresetStore
         return new List<Preset>();
     }
 
+    private static readonly string ActivePath =
+        System.IO.Path.Combine(ConfigStore.RootDir, "active-preset.txt");
+
+    /// <summary>
+    /// Which preset's layout is currently in checkpoints.txt. Times fold into
+    /// this one only: two presets on the same map share the map's splits, so
+    /// without this the second would pick up the first's times.
+    /// </summary>
+    public static string? ActiveId()
+    {
+        try { return File.Exists(ActivePath) ? File.ReadAllText(ActivePath).Trim() : null; }
+        catch { return null; }
+    }
+
+    public static void SetActive(string id)
+    {
+        try
+        {
+            Directory.CreateDirectory(ConfigStore.RootDir);
+            File.WriteAllText(ActivePath, id);
+        }
+        catch { /* not worth surfacing */ }
+    }
+
     public static void Save(List<Preset> presets)
     {
         try
