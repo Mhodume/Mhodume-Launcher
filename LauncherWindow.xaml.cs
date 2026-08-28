@@ -66,8 +66,7 @@ public partial class LauncherWindow : Window
         SetStatus(result.Message, accent: result.Ok);
         if (result.Ok)
         {
-            EnsureOverlay();
-            Close();
+            HandOffToGame();
             return;
         }
 
@@ -119,8 +118,7 @@ public partial class LauncherWindow : Window
         // the overlay window, though hidden, is still open.
         if (result.Ok)
         {
-            EnsureOverlay();
-            Close();
+            HandOffToGame();
             return;
         }
 
@@ -140,6 +138,43 @@ public partial class LauncherWindow : Window
     /// The launcher window then steps aside — the overlay is the in-game face
     /// from here on, and two visible windows would only compete.
     /// </summary>
+    private System.Windows.Threading.DispatcherTimer? _exitWatch;
+
+    /// <summary>
+    /// The game is starting: bring the overlay up for in-game use, hide this
+    /// window rather than close it, and watch for the game to exit so it can
+    /// come back. Hidden, not closed, so there is always a way back to the two
+    /// buttons — closing left the app running with no window to reach.
+    /// </summary>
+    private void HandOffToGame()
+    {
+        EnsureOverlay();
+        Hide();
+
+        _watch.Stop();
+        _exitWatch?.Stop();
+        _exitWatch = new System.Windows.Threading.DispatcherTimer
+        {
+            Interval = TimeSpan.FromSeconds(2),
+        };
+        _exitWatch.Tick += (_, _) =>
+        {
+            if (Game.IsRunning) return;
+            _exitWatch!.Stop();
+            _overlay?.Hide();
+            Show();
+            WindowState = WindowState.Normal;
+            Activate();
+            _busy = false;
+            TrainingButton.IsEnabled = true;
+            CompeteButton.IsEnabled = true;
+            RefreshStatus();
+            RefreshPresets();
+            _watch.Start();
+        };
+        _exitWatch.Start();
+    }
+
     private void EnsureOverlay()
     {
         if (_overlay is null)
@@ -202,5 +237,6 @@ public partial class LauncherWindow : Window
     private void Minimise_Click(object sender, RoutedEventArgs e) =>
         WindowState = WindowState.Minimized;
 
-    private void Close_Click(object sender, RoutedEventArgs e) => Close();
+    private void Close_Click(object sender, RoutedEventArgs e) =>
+        Application.Current.Shutdown();
 }
