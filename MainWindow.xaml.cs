@@ -278,11 +278,11 @@ public partial class MainWindow : Window
                 ModeChipText.Text = "TRAINING";
                 ModeChipText.Foreground = (Brush)FindResource("Accent");
                 ModeChip.BorderBrush = (Brush)FindResource("Accent");
-                SwitchModeButton.Content = "SWITCH TO RANKED";
+                SwitchModeButton.Content = "SWITCH TO COMPETE";
                 SwitchModeButton.IsEnabled = true;
                 break;
-            case Mode.Ranked:
-                ModeChipText.Text = "RANKED";
+            case Mode.Compete:
+                ModeChipText.Text = "COMPETE";
                 ModeChipText.Foreground = (Brush)FindResource("Text");
                 ModeChip.BorderBrush = (Brush)FindResource("Edge");
                 SwitchModeButton.Content = "SWITCH TO TRAINING";
@@ -301,7 +301,7 @@ public partial class MainWindow : Window
         if (_switching) return;
         var current = ModeSwitch.CurrentMode();
         if (current is null) return;
-        var target = current == Mode.Training ? Mode.Ranked : Mode.Training;
+        var target = current == Mode.Training ? Mode.Compete : Mode.Training;
 
         _switching = true;
         SwitchModeButton.IsEnabled = false;

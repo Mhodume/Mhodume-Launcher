@@ -51,15 +51,15 @@ public partial class LauncherWindow : Window
     private async void Training_Click(object sender, RoutedEventArgs e) =>
         await EnterMode(Mode.Training);
 
-    private async void Ranked_Click(object sender, RoutedEventArgs e) =>
-        await EnterMode(Mode.Ranked);
+    private async void Compete_Click(object sender, RoutedEventArgs e) =>
+        await EnterMode(Mode.Compete);
 
     private async Task EnterMode(Mode mode)
     {
         if (_busy) return;
         _busy = true;
         TrainingButton.IsEnabled = false;
-        RankedButton.IsEnabled = false;
+        CompeteButton.IsEnabled = false;
         _watch.Stop();
 
         var result = await ModeSwitch.Enter(mode, msg =>
@@ -84,7 +84,7 @@ public partial class LauncherWindow : Window
 
         _busy = false;
         TrainingButton.IsEnabled = true;
-        RankedButton.IsEnabled = true;
+        CompeteButton.IsEnabled = true;
         RefreshMode();
         _watch.Start();
     }
@@ -121,7 +121,7 @@ public partial class LauncherWindow : Window
             SetStatus("VHOLUME not found — install it through Steam first.", accent: false);
             ModeText.Text = "";
             TrainingButton.IsEnabled = false;
-            RankedButton.IsEnabled = false;
+            CompeteButton.IsEnabled = false;
             return;
         }
 
@@ -134,7 +134,7 @@ public partial class LauncherWindow : Window
         }
 
         TrainingButton.IsEnabled = true;
-        RankedButton.IsEnabled = true;
+        CompeteButton.IsEnabled = true;
         SetStatus(Game.IsRunning ? "VHOLUME is running." : "VHOLUME is installed and ready.",
                   accent: false);
         RefreshMode();
@@ -145,7 +145,7 @@ public partial class LauncherWindow : Window
         ModeText.Text = ModeSwitch.CurrentMode() switch
         {
             Mode.Training => "set for TRAINING",
-            Mode.Ranked => "set for RANKED",
+            Mode.Compete => "set for COMPETE",
             _ => "",
         };
     }

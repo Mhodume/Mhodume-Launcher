@@ -76,7 +76,7 @@
 
             <TextBlock Grid.Row="0" TextWrapping="Wrap" Foreground="{StaticResource Muted}"
                        FontSize="12.5" LineHeight="19"
-                       Text="Pick how to play. Training runs the game with the tools and the overlay; ranked runs it clean, so a time counts. Switching either way restarts the game for you."/>
+                       Text="Pick how to play. Training runs the game with the tools and the overlay; compete runs it clean, so a time counts. Switching either way restarts the game for you."/>
 
             <!-- The two modes, side by side, each a slab you press. -->
             <Grid Grid.Row="1" Margin="0,20,0,0">
@@ -102,11 +102,11 @@
                     </StackPanel>
                 </Button>
 
-                <!-- RANKED -->
-                <Button Grid.Column="2" x:Name="RankedButton" Click="Ranked_Click"
+                <!-- COMPETE -->
+                <Button Grid.Column="2" x:Name="CompeteButton" Click="Compete_Click"
                         Style="{StaticResource ModeCard}">
                     <StackPanel>
-                        <TextBlock Text="RANKED" FontFamily="{StaticResource Mono}"
+                        <TextBlock Text="COMPETE" FontFamily="{StaticResource Mono}"
                                    FontSize="20" FontWeight="Bold"
                                    Foreground="{StaticResource Text}"/>
                         <TextBlock Text="the plain game, nothing added"

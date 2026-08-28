@@ -10,7 +10,7 @@ public enum Mode
     Training,
 
     /// <summary>Loader absent: a plain, unmodified game whose runs count.</summary>
-    Ranked,
+    Compete,
 }
 
 /// <summary>
@@ -36,13 +36,13 @@ public static class ModeSwitch
         return ModLoader.Current switch
         {
             ModLoader.State.Enabled => Mode.Training,
-            ModLoader.State.Disabled => Mode.Ranked,
+            ModLoader.State.Disabled => Mode.Compete,
             _ => null,
         };
     }
 
     /// <summary>
-    /// Reports progress ("closing the game", "switching to ranked", "starting")
+    /// Reports progress ("closing the game", "switching to compete", "starting")
     /// so the window can show what is happening during the few seconds a switch
     /// takes.
     /// </summary>
@@ -67,7 +67,7 @@ public static class ModeSwitch
         }
 
         // Training resumes the last level the mod knew. status.txt holds it,
-        // written by the mod while it was last running; in ranked there is no
+        // written by the mod while it was last running; in compete there is no
         // mod, so this is the level from before the switch — where you want to
         // come back to. Written before launch so the mod reads it on startup.
         if (mode == Mode.Training)
@@ -107,6 +107,6 @@ public static class ModeSwitch
 
         return new Result(true, mode == Mode.Training
             ? "Training — the mod is on. Runs will not be submitted."
-            : "Ranked — the game is clean. Runs count.");
+            : "Compete — the game is clean. Runs count.");
     }
 }
