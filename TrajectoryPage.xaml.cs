@@ -194,15 +194,30 @@ public partial class TrajectoryPage : UserControl
 
     private void MapBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (MapBox.SelectedItem is not string map) return;
+        RebuildGhostList();
+    }
 
-        // best (fastest completed) first, unfinished runs last
-        GhostList.ItemsSource = _all
-            .Where(g => g.Map == map)
-            .OrderBy(g => g.Completed ? 0 : 1)
-            .ThenBy(g => g.TimeMs)
-            .ToList();
+    private void SortBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        => RebuildGhostList();
 
+    /// <summary>
+    /// The runs for the chosen map, in the chosen order. Unfinished runs sink
+    /// to the bottom either way — a partial run is never the one you want first,
+    /// whether you are after the fastest or the newest.
+    /// </summary>
+    private void RebuildGhostList()
+    {
+        if (MapBox is null || MapBox.SelectedItem is not string map) return;
+
+        var runs = _all.Where(g => g.Map == map)
+                       .OrderBy(g => g.Completed ? 0 : 1);
+
+        var byRecent = SortBox?.SelectedIndex == 1;
+        runs = byRecent
+            ? runs.ThenByDescending(g => g.Recorded)
+            : runs.ThenBy(g => g.TimeMs);
+
+        GhostList.ItemsSource = runs.ToList();
         LoadButton.IsEnabled = false;
     }
 

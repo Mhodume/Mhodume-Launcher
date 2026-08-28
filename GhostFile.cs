@@ -12,10 +12,14 @@ public record GhostInfo(
     double DurationSeconds,
     int TimeMs,
     bool Completed,
-    string Category)
+    string Category,
+    DateTime Recorded)
 {
     public string TimeText => TimeSpan.FromMilliseconds(TimeMs).ToString(@"m\:ss\.fff");
     public string Display => $"{PlayerName} — {TimeText}{(Completed ? "" : " (unfinished)")}";
+
+    /// <summary>When the run was recorded, short and relative-feeling.</summary>
+    public string DateText => Recorded == default ? "" : Recorded.ToString("dd MMM");
 }
 
 /// <summary>One continuous run of points; a teleport starts a new segment.</summary>
@@ -145,7 +149,12 @@ public static class GhostFile
         if (path.Contains(Path.Combine("Ghosts", "Downloaded"), StringComparison.OrdinalIgnoreCase))
             category = "Downloaded";
 
-        return new GhostInfo(path, map, player, duration, timeMs, completed, category);
+        // The file's own write time is when the run was saved — a real date to
+        // sort by, with no timestamp needed in the ghost itself.
+        DateTime recorded;
+        try { recorded = File.GetLastWriteTime(path); } catch { recorded = default; }
+
+        return new GhostInfo(path, map, player, duration, timeMs, completed, category, recorded);
     }
 
     private static string Decompress(string path)
