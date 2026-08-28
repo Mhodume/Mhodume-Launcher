@@ -367,7 +367,7 @@ public class ConfigStore
             Left = left, Top = top, Width = width, Height = height,
         });
 
-    public double LoadOpacity() => LoadOverlayState().Opacity ?? 0.92;
+    public double LoadOpacity() => LoadOverlayState().Opacity ?? 0.85;
 
     public void SaveOpacity(double opacity) =>
         SaveOverlayState(LoadOverlayState() with { Opacity = opacity });

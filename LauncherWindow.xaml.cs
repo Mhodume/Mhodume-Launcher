@@ -71,7 +71,16 @@ public partial class LauncherWindow : Window
         // Ctrl+Shift+M is live over the game. Created hidden and once: the same
         // window serves both modes, and its own title-bar switch flips between
         // them without coming back here.
-        if (result.Ok) EnsureOverlay();
+        // Once a mode has started the game, bring the overlay into being so its
+        // Ctrl+Shift+M is live over the game, then close this window: the
+        // overlay is the in-game face from here on. The app stays alive because
+        // the overlay window, though hidden, is still open.
+        if (result.Ok)
+        {
+            EnsureOverlay();
+            Close();
+            return;
+        }
 
         _busy = false;
         TrainingButton.IsEnabled = true;
@@ -100,7 +109,6 @@ public partial class LauncherWindow : Window
             _overlay.Show();
             _overlay.Hide();
         }
-        WindowState = WindowState.Minimized;
     }
 
     // ------------------------------------------------------------ the status

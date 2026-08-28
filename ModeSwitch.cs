@@ -66,6 +66,23 @@ public static class ModeSwitch
                 return new Result(false, "The game would not close. Close it and try again.");
         }
 
+        // Training resumes the last level the mod knew. status.txt holds it,
+        // written by the mod while it was last running; in ranked there is no
+        // mod, so this is the level from before the switch — where you want to
+        // come back to. Written before launch so the mod reads it on startup.
+        if (mode == Mode.Training)
+        {
+            try
+            {
+                var lastMap = ConfigStore.ReadCurrentMap();
+                var store = new ConfigStore();
+                var cfg = store.LoadLive();
+                cfg.Tweaks.StartupLevel = lastMap ?? "";
+                store.FlushLive(cfg);
+            }
+            catch { /* resuming is a convenience; never block a launch on it */ }
+        }
+
         var wantEnabled = mode == Mode.Training;
         var isEnabled = ModLoader.Current == ModLoader.State.Enabled;
         if (wantEnabled != isEnabled)

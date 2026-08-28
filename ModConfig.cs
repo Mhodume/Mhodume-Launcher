@@ -592,9 +592,20 @@ public class TweaksConfig : ObservableObject
     [JsonPropertyName("reloadRequest")]
     public int ReloadRequest { get => _reloadRequest; set => Set(ref _reloadRequest, value); }
 
+    private string _startupLevel = "";
+
+    /// <summary>
+    /// The level to drop into when training starts, so it resumes where you
+    /// left it. The launcher sets this to the last level it knew before the
+    /// game launched; the mod loads it once. Empty leaves you at the menu.
+    /// </summary>
+    [JsonPropertyName("startupLevel")]
+    public string StartupLevel { get => _startupLevel; set => Set(ref _startupLevel, value); }
+
     public TweaksConfig Clone() => new()
     {
         StayOnLevel = StayOnLevel, ReloadRequest = ReloadRequest,
+        StartupLevel = StartupLevel,
     };
 }
 
