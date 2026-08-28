@@ -32,7 +32,49 @@ public partial class LauncherWindow : Window
         // change under it.
         _watch = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
         _watch.Tick += (_, _) => RefreshStatus();
-        Loaded += (_, _) => { RefreshStatus(); _watch.Start(); };
+        Loaded += (_, _) => { RefreshStatus(); RefreshPresets(); _watch.Start(); };
+    }
+
+    private void RefreshPresets()
+    {
+        var presets = PresetStore.Load();
+        PresetList.ItemsSource = presets;
+        NoPresets.Visibility = presets.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    /// <summary>
+    /// Train a preset from the launcher: put its layout in place, then start
+    /// the game in training and resume onto its map. Same preparation as the
+    /// overlay's button, a different way of getting to the map.
+    /// </summary>
+    private async void TrainPreset_Click(object sender, RoutedEventArgs e)
+    {
+        if (_busy) return;
+        if (sender is not System.Windows.Controls.Button { Tag: Preset preset }) return;
+
+        PresetActions.LoadLayout(preset);
+
+        _busy = true;
+        TrainingButton.IsEnabled = false;
+        CompeteButton.IsEnabled = false;
+        _watch.Stop();
+
+        var result = await ModeSwitch.Enter(Mode.Training,
+            msg => Dispatcher.Invoke(() => SetStatus(msg, accent: true)),
+            startupLevel: preset.Map);
+
+        SetStatus(result.Message, accent: result.Ok);
+        if (result.Ok)
+        {
+            EnsureOverlay();
+            Close();
+            return;
+        }
+
+        _busy = false;
+        TrainingButton.IsEnabled = true;
+        CompeteButton.IsEnabled = true;
+        _watch.Start();
     }
 
     protected override void OnSourceInitialized(EventArgs e)

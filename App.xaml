@@ -1,8 +1,12 @@
 <Application x:Class="Mhodume.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Mhodume"
              StartupUri="LauncherWindow.xaml">
     <Application.Resources>
+
+        <!-- Map file names to what players see, available everywhere. -->
+        <local:MapNameConverter x:Key="MapName"/>
 
         <!-- Palette
              Follows the game: low-poly brutalist, near-black concrete with one

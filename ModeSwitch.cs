@@ -46,7 +46,8 @@ public static class ModeSwitch
     /// so the window can show what is happening during the few seconds a switch
     /// takes.
     /// </summary>
-    public static async Task<Result> Enter(Mode mode, Action<string> progress)
+    public static async Task<Result> Enter(Mode mode, Action<string> progress,
+                                          string? startupLevel = null)
     {
         var binaries = Game.BinariesDir;
         if (binaries is null)
@@ -74,10 +75,11 @@ public static class ModeSwitch
         {
             try
             {
-                var lastMap = ConfigStore.ReadCurrentMap();
+                // A preset says which level; otherwise resume the last one.
+                var resume = startupLevel ?? ConfigStore.ReadCurrentMap() ?? "";
                 var store = new ConfigStore();
                 var cfg = store.LoadLive();
-                cfg.Tweaks.StartupLevel = lastMap ?? "";
+                cfg.Tweaks.StartupLevel = resume;
                 store.FlushLive(cfg);
             }
             catch { /* resuming is a convenience; never block a launch on it */ }

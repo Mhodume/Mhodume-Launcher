@@ -256,6 +256,7 @@
             <local:TrajectoryPage x:Name="PageTrajectory" Visibility="Collapsed"/>
             <local:MapsPage       x:Name="PageMaps"       Visibility="Collapsed"/>
             <local:CheckpointsPage x:Name="PageCheckpoints" Visibility="Collapsed"/>
+            <local:PresetsPage    x:Name="PagePresets"    Visibility="Collapsed"/>
             <local:TrainingPage   x:Name="PageTraining"   Visibility="Collapsed"/>
             <local:TweaksPage     x:Name="PageTweaks"     Visibility="Collapsed"/>
             <local:FreecamPage    x:Name="PageFreecam"    Visibility="Collapsed"/>

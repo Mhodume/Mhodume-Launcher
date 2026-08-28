@@ -602,10 +602,21 @@ public class TweaksConfig : ObservableObject
     [JsonPropertyName("startupLevel")]
     public string StartupLevel { get => _startupLevel; set => Set(ref _startupLevel, value); }
 
+    private string _gotoLevel = "";
+    private int _gotoRequest;
+
+    /// <summary>The level a preset takes you to, in game, when its counter is
+    /// bumped. Set together with GotoRequest.</summary>
+    [JsonPropertyName("gotoLevel")]
+    public string GotoLevel { get => _gotoLevel; set => Set(ref _gotoLevel, value); }
+
+    [JsonPropertyName("gotoRequest")]
+    public int GotoRequest { get => _gotoRequest; set => Set(ref _gotoRequest, value); }
+
     public TweaksConfig Clone() => new()
     {
         StayOnLevel = StayOnLevel, ReloadRequest = ReloadRequest,
-        StartupLevel = StartupLevel,
+        StartupLevel = StartupLevel, GotoLevel = GotoLevel, GotoRequest = GotoRequest,
     };
 }
 

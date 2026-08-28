@@ -172,6 +172,8 @@ public partial class MainWindow : Window
                     Note = "your own splits" },
             new() { Name = "Trajectory", Page = PageTrajectory,
                     Note = "a saved run drawn in the world" },
+            new() { Name = "Presets", Page = PagePresets,
+                    Note = "saved checkpoint layouts and their times" },
 
             new() { Name = "TOOLS", Group = "TOOLS" },
             new() { Name = "Freecam", Page = PageFreecam,
@@ -210,6 +212,7 @@ public partial class MainWindow : Window
         _store.FlushLive(_config);
 
         PageTrajectory.Initialize(_store);
+        PagePresets.Initialize(_store, () => _config, () => _currentMapName);
         PageProfiles.Initialize(_store, () => _config);
         PageProfiles.ProfileLoaded += OnProfileLoaded;
 
@@ -269,6 +272,7 @@ public partial class MainWindow : Window
     // ----------------------------------------------------------- the caption
     // --------------------------------------------------------- mode switch
     private bool _switching;
+    private string? _currentMapName;
 
     private void RefreshModeChip()
     {
@@ -539,7 +543,8 @@ public partial class MainWindow : Window
                 GameStatus.Foreground = (Brush)FindResource("WarnText");
             }
 
-            PageTrajectory.UpdateCurrentMap(running ? status.Map : null);
+            _currentMapName = running ? status.Map : null;
+            PageTrajectory.UpdateCurrentMap(_currentMapName);
             RefreshLoaderState();
         };
         _gameWatch.Start();

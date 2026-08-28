@@ -209,6 +209,40 @@ public static class CheckpointStore
         ShiftSplitsDown(map, number);
     }
 
+    /// <summary>
+    /// Clears one map's times, so a preset loaded onto that map starts fresh,
+    /// without disturbing any other map. Done on the raw text — removing the
+    /// map's block from "M &lt;map&gt;" to the next "M" — because rewriting the
+    /// parsed splits would drop the complete-run and entry-state lines the
+    /// parser does not carry.
+    /// </summary>
+    public static void ClearMapSplits(string map)
+    {
+        if (!File.Exists(SplitsPath)) return;
+        string[] lines;
+        try { lines = File.ReadAllLines(SplitsPath); }
+        catch { return; }
+
+        var kept = new List<string>();
+        var skipping = false;
+        foreach (var line in lines)
+        {
+            if (line.StartsWith("M ", StringComparison.Ordinal))
+                skipping = string.Equals(line[2..].Trim(), map, StringComparison.OrdinalIgnoreCase);
+            if (!skipping) kept.Add(line);
+        }
+        try { WriteAtomic(SplitsPath, string.Join('\n', kept) + (kept.Count > 0 ? "\n" : "")); }
+        catch { /* clearing times is best effort */ }
+    }
+
+    /// <summary>Replaces one map's checkpoints, leaving the others untouched.</summary>
+    public static void SetMapCheckpoints(string map, List<CheckpointPoint> points)
+    {
+        var maps = ReadCheckpoints();
+        maps[map] = points;
+        WriteCheckpoints(maps);
+    }
+
     public static void DeleteMap(string map)
     {
         var maps = ReadCheckpoints();
