@@ -68,6 +68,7 @@ public sealed class Overlay
     private IntPtr _handle;
     private IntPtr _previous;
     private bool _registered;
+    private double _opacity = 1.0;
 
     /// <summary>What the key was, so the app can say so when it could not take it.</summary>
     public string KeyName { get; private set; } = "";
@@ -131,6 +132,11 @@ public sealed class Overlay
             _window.WindowState = WindowState.Normal;
         _window.Activate();
         SetForegroundWindow(_handle);
+
+        // Re-applied here, not just at startup: the layered attribute set
+        // before the first paint does not reliably stick, and showing the
+        // window is the moment it is certain to.
+        Apply(_opacity);
     }
 
     public void Hide()
@@ -150,9 +156,14 @@ public sealed class Overlay
     /// </summary>
     public void SetOpacity(double opacity)
     {
+        _opacity = Math.Clamp(opacity, 0.3, 1.0);
+        Apply(_opacity);
+    }
+
+    private void Apply(double solid)
+    {
         if (_handle == IntPtr.Zero) return;
 
-        var solid = Math.Clamp(opacity, 0.3, 1.0);
         var style = GetWindowLong(_handle, GWL_EXSTYLE);
 
         if (solid >= 1.0)
