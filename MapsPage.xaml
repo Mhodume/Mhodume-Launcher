@@ -238,7 +238,7 @@
 
                     <TextBlock x:Name="DrawNotice" TextWrapping="Wrap" FontSize="11"
                                Foreground="{StaticResource Muted}" Margin="0,8,0,0" LineHeight="17"
-                               Text="Drawing a route turns the trajectory on. It needs training mode (F7) in game, so laps you run with it are not countable."/>
+                               Text="Drawing a route turns the trajectory on. It shows in training, where runs do not count anyway."/>
 
                     <Border Margin="0,12,0,0" Padding="12,10"
                             Background="{StaticResource PanelAlt}"

@@ -298,11 +298,8 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="F7" Foreground="{StaticResource Accent}" FontFamily="{StaticResource Mono}" FontWeight="Bold"/>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="F6" Foreground="{StaticResource Accent}" FontFamily="{StaticResource Mono}" FontWeight="Bold"/>
                         <TextBlock Grid.Row="0" Grid.Column="1" TextWrapping="Wrap" Margin="0,0,0,6"
-                                   Text="Training mode on/off — required for the trajectory and the freecam"/>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="F6" Foreground="{StaticResource Accent}" FontFamily="{StaticResource Mono}" FontWeight="Bold"/>
-                        <TextBlock Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" Margin="0,0,0,6"
                                    Text="Ask the engine what it is answering, and start the error counts clean"/>
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="F10" Foreground="{StaticResource Accent}" FontFamily="{StaticResource Mono}" FontWeight="Bold"/>
                         <TextBlock Grid.Row="2" Grid.Column="1" Text="The game's own debug console (not part of this mod)"/>

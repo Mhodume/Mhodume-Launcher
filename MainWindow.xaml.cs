@@ -169,18 +169,13 @@ public partial class MainWindow : Window
             new() { Name = "Maps", Page = PageMaps,
                     Note = "read from your save and ghost folders" },
             new() { Name = "Checkpoints", Page = PageCheckpoints,
-                    Note = "your own splits",
-                    NeedsTraining = true },
+                    Note = "your own splits" },
             new() { Name = "Trajectory", Page = PageTrajectory,
-                    Note = "a saved run drawn in the world",
-                    NeedsTraining = true },
+                    Note = "a saved run drawn in the world" },
 
             new() { Name = "TOOLS", Group = "TOOLS" },
             new() { Name = "Freecam", Page = PageFreecam,
-                    Note = "detach the camera",
-                    NeedsTraining = true },
-            new() { Name = "Training", Page = PageTraining,
-                    Note = "whether this lap still counts" },
+                    Note = "detach the camera" },
             new() { Name = "Tweaks", Page = PageTweaks,
                     Note = "how the game behaves while you practise" },
 
@@ -245,7 +240,6 @@ public partial class MainWindow : Window
         PageTrajectory.DataContext = _config.Trajectory;
         PageFreecam.DataContext = _config.Freecam;
         PageCrosshair.SetSpeedContext(_config.Speed);
-        PageTraining.DataContext = _config.Training;
         PageTweaks.DataContext = _config.Tweaks;
         PageCheckpoints.DataContext = _config.Checkpoints;
 
@@ -373,9 +367,7 @@ public partial class MainWindow : Window
         PageNumber.Text = chosen?.Number ?? "";
         PageTitle.Text = chosen?.Title ?? "";
         PageNote.Text = chosen?.Note ?? "";
-        TrainingNeeded.Visibility = chosen is { NeedsTraining: true }
-            ? Visibility.Visible
-            : Visibility.Collapsed;
+        TrainingNeeded.Visibility = Visibility.Collapsed;
     }
 
     private void RefreshLoaderState()
@@ -548,7 +540,6 @@ public partial class MainWindow : Window
             }
 
             PageTrajectory.UpdateCurrentMap(running ? status.Map : null);
-            PageTraining.UpdateState(running, status.Training, status.LapTainted);
             RefreshLoaderState();
         };
         _gameWatch.Start();
