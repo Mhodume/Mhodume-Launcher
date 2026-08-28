@@ -162,22 +162,11 @@ public sealed class Overlay
 
     private void Apply(double solid)
     {
-        if (_handle == IntPtr.Zero) return;
-
-        var style = GetWindowLong(_handle, GWL_EXSTYLE);
-
-        if (solid >= 1.0)
-        {
-            // Taken back off rather than set to full: a layered window is
-            // composited differently even at full alpha, and there is no
-            // reason to pay for that when nothing is see-through.
-            SetWindowLong(_handle, GWL_EXSTYLE, style & ~WS_EX_LAYERED);
-            return;
-        }
-
-        if ((style & WS_EX_LAYERED) == 0)
-            SetWindowLong(_handle, GWL_EXSTYLE, style | WS_EX_LAYERED);
-        SetLayeredWindowAttributes(_handle, 0, (byte)Math.Round(solid * 255), LWA_ALPHA);
+        // Window.Opacity, not a layered window: the layered-window attribute
+        // does not make a WPF window over the desktop translucent here (it
+        // stays opaque), while AllowsTransparency plus Opacity does. The window
+        // carries AllowsTransparency=True for exactly this.
+        _window.Opacity = solid;
     }
 
     private static Mod Translate(ModifierKeys modifiers)

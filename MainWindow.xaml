@@ -6,7 +6,7 @@
         MinHeight="600" MinWidth="940"
         Background="{StaticResource Bg}"
         Icon="assets/mhodume.ico"
-        WindowStyle="None" ResizeMode="CanResize"
+        WindowStyle="None" ResizeMode="CanResize" AllowsTransparency="True"
         WindowStartupLocation="CenterScreen"
         Topmost="True" ShowInTaskbar="False">
 
