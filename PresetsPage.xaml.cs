@@ -125,17 +125,27 @@ public partial class PresetsPage : UserControl
         if (PresetList.SelectedItem is not Preset preset) return;
         if (_config is null || _store is null) return;
 
+        // Already on this preset's map? Then only its checkpoints need to
+        // change — the mod picks those up from the file with no reload. Sending
+        // a goto here would reload the level and reset your run timer mid-run,
+        // which is exactly the wrong thing when you are already there.
+        var alreadyHere = string.Equals(_currentMap?.Invoke(), preset.Map,
+                                        StringComparison.OrdinalIgnoreCase);
+
         PresetActions.LoadLayout(preset);
 
-        // Send the running game to the preset's map now, and set it as where a
-        // relaunch would resume, so the layout is there either way.
         var cfg = _config();
         cfg.Tweaks.StartupLevel = preset.Map;
-        cfg.Tweaks.GotoLevel = preset.Map;
-        cfg.Tweaks.GotoRequest += 1;
+        if (!alreadyHere)
+        {
+            cfg.Tweaks.GotoLevel = preset.Map;
+            cfg.Tweaks.GotoRequest += 1;
+        }
         _store.FlushLive(cfg);
 
-        TrainNote.Text = "Loading its checkpoints and going to the map — needs training mode.";
+        TrainNote.Text = alreadyHere
+            ? "Checkpoints loaded. Run from your spawn — the timer is already going."
+            : "Loading its checkpoints and going to the map — needs training mode.";
     }
 
     /// <summary>
