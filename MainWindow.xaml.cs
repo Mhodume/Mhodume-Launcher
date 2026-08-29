@@ -166,8 +166,6 @@ public partial class MainWindow : Window
                     Note = "the game's own overlay · applies live" },
 
             new() { Name = "ROUTE", Group = "ROUTE" },
-            new() { Name = "Maps", Page = PageMaps,
-                    Note = "read from your save and ghost folders" },
             new() { Name = "Checkpoints", Page = PageCheckpoints,
                     Note = "your own splits" },
             new() { Name = "Trajectory", Page = PageTrajectory,
@@ -245,10 +243,6 @@ public partial class MainWindow : Window
         PageCrosshair.SetSpeedContext(_config.Speed);
         PageTweaks.DataContext = _config.Tweaks;
         PageCheckpoints.DataContext = _config.Checkpoints;
-
-        // Maps writes into the trajectory section, which is replaced wholesale
-        // when a profile is loaded — so it is re-pointed here, not once at startup.
-        if (_store is not null) PageMaps.Initialize(_store, _config.Trajectory);
     }
 
     private void Config_AnyChanged(object? sender, EventArgs e)

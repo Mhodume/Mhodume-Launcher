@@ -254,7 +254,6 @@
             <local:CrosshairPage  x:Name="PageCrosshair"/>
             <local:HudPage        x:Name="PageHud"        Visibility="Collapsed"/>
             <local:TrajectoryPage x:Name="PageTrajectory" Visibility="Collapsed"/>
-            <local:MapsPage       x:Name="PageMaps"       Visibility="Collapsed"/>
             <local:CheckpointsPage x:Name="PageCheckpoints" Visibility="Collapsed"/>
             <local:PresetsPage    x:Name="PagePresets"    Visibility="Collapsed"/>
             <local:TrainingPage   x:Name="PageTraining"   Visibility="Collapsed"/>

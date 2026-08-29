@@ -7,6 +7,7 @@
         Background="{StaticResource Bg}"
         Icon="assets/mhodume.ico"
         WindowStyle="None" ResizeMode="CanResize"
+        Topmost="True" ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner">
 
     <WindowChrome.WindowChrome>
