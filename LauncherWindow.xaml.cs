@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
@@ -38,6 +39,18 @@ public partial class LauncherWindow : Window
     private void RefreshPresets()
     {
         var presets = PresetStore.Load();
+
+        // Fold the mod's latest splits into the loaded preset before showing it,
+        // so a run just finished in training shows its new best here. Without
+        // this the fold only happened when the config app's Presets page was
+        // opened, and the launcher's own list stayed on the old time.
+        var active = presets.FirstOrDefault(p => p.Id == PresetStore.ActiveId());
+        if (active is not null)
+        {
+            PresetStore.FoldTimes(active);
+            PresetStore.Save(presets);
+        }
+
         PresetList.ItemsSource = presets;
         NoPresets.Visibility = presets.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
     }
