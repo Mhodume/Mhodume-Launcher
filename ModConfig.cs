@@ -627,7 +627,11 @@ public class TweaksConfig : ObservableObject
 /// </summary>
 public class CheckpointsConfig : ObservableObject
 {
-    private bool _enabled;
+    // On by default: the mod claims the placement key only at game load, and
+    // only when checkpoints are enabled, so a fresh setup that started with them
+    // off cannot place one until the game is restarted. Starting on binds the
+    // key from the first launch, so dropping a checkpoint just works.
+    private bool _enabled = true;
     private int _radius = 250;
     private int _height = 600;
     private string _key = "INS";
