@@ -77,19 +77,7 @@
                         <TextBlock x:Name="DetailMap" FontSize="12"
                                    Foreground="{StaticResource Muted}" Margin="0,2,0,0"/>
 
-                        <Grid Margin="0,14,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="Best complete run"
-                                       Style="{StaticResource Label}" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Column="1" x:Name="DetailGlobal"
-                                       FontFamily="{StaticResource Mono}" FontSize="17"
-                                       Foreground="{StaticResource Accent}"/>
-                        </Grid>
-
-                        <TextBlock Text="SECTIONS" Style="{StaticResource Label}" Margin="0,16,0,6"/>
+                        <TextBlock Text="SECTIONS" Style="{StaticResource Label}" Margin="0,20,0,6"/>
                         <ItemsControl x:Name="Sections">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>

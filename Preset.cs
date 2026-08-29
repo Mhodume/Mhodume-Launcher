@@ -29,15 +29,8 @@ public class Preset
     /// <summary>Best time per section number, in seconds.</summary>
     public Dictionary<int, double> SectionBests { get; set; } = new();
 
-    /// <summary>Best complete run, first checkpoint to last, in seconds.</summary>
-    public double? GlobalBestSeconds { get; set; }
-
     [JsonIgnore]
     public int SectionCount => Checkpoints.Count / 2;
-
-    [JsonIgnore]
-    public string GlobalBestText =>
-        GlobalBestSeconds is double s ? FormatTime(s) : "—";
 
     public static string FormatTime(double seconds)
     {
@@ -129,9 +122,9 @@ public static class PresetStore
     }
 
     /// <summary>
-    /// Updates a preset's stored bests from the mod's current splits for its
-    /// map — called while that preset is the loaded one, so its own times are
-    /// what get folded in. Bests only improve; a slower run never overwrites.
+    /// Updates a preset's stored section bests from the mod's current splits for
+    /// its map — called while that preset is the loaded one, so its own times
+    /// are what get folded in. Bests only improve; a slower run never overwrites.
     /// </summary>
     public static void FoldTimes(Preset preset)
     {
@@ -144,13 +137,6 @@ public static class PresetStore
                 if (!preset.SectionBests.TryGetValue(index, out var have) || best < have)
                     preset.SectionBests[index] = best;
             }
-        }
-
-        var runs = CheckpointStore.ReadRunBests();
-        if (runs.TryGetValue(preset.Map, out var global))
-        {
-            if (preset.GlobalBestSeconds is not double g || global < g)
-                preset.GlobalBestSeconds = global;
         }
     }
 }

@@ -142,7 +142,6 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Grid.Column="0" VerticalAlignment="Center">
                                             <TextBlock Text="{Binding Name}" FontSize="13"
@@ -150,11 +149,7 @@
                                             <TextBlock FontSize="11" Foreground="{StaticResource Muted}"
                                                        Text="{Binding Map, Converter={StaticResource MapName}}"/>
                                         </StackPanel>
-                                        <TextBlock Grid.Column="1" Text="{Binding GlobalBestText}"
-                                                   FontFamily="{StaticResource Mono}" FontSize="12.5"
-                                                   Foreground="{StaticResource Muted}"
-                                                   VerticalAlignment="Center" Margin="0,0,12,0"/>
-                                        <Button Grid.Column="2" Content="Train" Padding="12,4"
+                                        <Button Grid.Column="1" Content="Train" Padding="12,4"
                                                 VerticalAlignment="Center"
                                                 Tag="{Binding}" Click="TrainPreset_Click"/>
                                     </Grid>

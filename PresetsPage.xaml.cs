@@ -107,7 +107,6 @@ public partial class PresetsPage : UserControl
         DetailName.Text = preset.Name;
         DetailMap.Text = $"{MapNames.Display(preset.Map)} · {preset.SectionCount} section" +
                          (preset.SectionCount == 1 ? "" : "s");
-        DetailGlobal.Text = preset.GlobalBestText;
 
         var rows = new List<SectionRow>();
         for (var i = 1; i <= preset.SectionCount; i++)
@@ -157,7 +156,6 @@ public partial class PresetsPage : UserControl
     {
         if (PresetList.SelectedItem is not Preset preset) return;
         preset.SectionBests.Clear();
-        preset.GlobalBestSeconds = null;
         PresetStore.Save(_presets);
         PresetList_SelectionChanged(this, null!);
         TrainNote.Text = "Times cleared — they rebuild as you run.";
