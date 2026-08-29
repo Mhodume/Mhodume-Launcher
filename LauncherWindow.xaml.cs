@@ -210,6 +210,7 @@ public partial class LauncherWindow : Window
         {
             SetStatus("VHOLUME not found — install it through Steam first.", accent: false);
             ModeText.Text = "";
+            OpenGameFolderButton.Visibility = Visibility.Collapsed;
             TrainingButton.IsEnabled = false;
             CompeteButton.IsEnabled = false;
             return;
@@ -218,16 +219,40 @@ public partial class LauncherWindow : Window
         ModLoader.BinariesDir = Game.BinariesDir;
         if (ModLoader.Current == ModLoader.State.NotInstalled)
         {
-            SetStatus("The mod is not installed in the game folder yet.", accent: false);
+            // The game is found, but the loader is not in the folder we look in.
+            // Almost always the mod files were dropped one level too deep or in
+            // the wrong Binaries — so we name the exact folder and open it, and
+            // the fix is to drop dwmapi.dll and ue4ss straight into it.
+            SetStatus("Mod not found. Put dwmapi.dll and the ue4ss folder here → " +
+                      Game.BinariesDir, accent: false);
             ModeText.Text = "";
+            OpenGameFolderButton.Visibility = Visibility.Visible;
+            TrainingButton.IsEnabled = false;
+            CompeteButton.IsEnabled = false;
             return;
         }
 
+        OpenGameFolderButton.Visibility = Visibility.Collapsed;
         TrainingButton.IsEnabled = true;
         CompeteButton.IsEnabled = true;
         SetStatus(Game.IsRunning ? "VHOLUME is running." : "VHOLUME is installed and ready.",
                   accent: false);
         RefreshMode();
+    }
+
+    /// <summary>Opens the exact folder the mod must sit in, so it cannot be put
+    /// in the wrong place.</summary>
+    private void OpenGameFolder_Click(object sender, RoutedEventArgs e)
+    {
+        var dir = Game.BinariesDir;
+        if (dir is null) return;
+        try
+        {
+            System.IO.Directory.CreateDirectory(dir);
+            System.Diagnostics.Process.Start(
+                new System.Diagnostics.ProcessStartInfo(dir) { UseShellExecute = true });
+        }
+        catch { /* nothing useful to do if the shell will not open it */ }
     }
 
     private void RefreshMode()

@@ -169,15 +169,18 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" x:Name="StatusText"
                            FontFamily="{StaticResource Mono}" FontSize="12"
                            Foreground="{StaticResource Muted}"
-                           VerticalAlignment="Center"
-                           Text="Looking for VHOLUME…"/>
-                <TextBlock Grid.Column="1" x:Name="ModeText"
+                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                <Button Grid.Column="1" x:Name="OpenGameFolderButton"
+                        Content="Open game folder" Padding="10,4" Margin="10,0,0,0"
+                        Visibility="Collapsed" Click="OpenGameFolder_Click"/>
+                <TextBlock Grid.Column="2" x:Name="ModeText"
                            FontFamily="{StaticResource Mono}" FontSize="12"
-                           Foreground="{StaticResource Accent}"
+                           Foreground="{StaticResource Accent}" Margin="10,0,0,0"
                            VerticalAlignment="Center"/>
             </Grid>
         </Border>
