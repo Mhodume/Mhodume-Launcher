@@ -162,7 +162,7 @@ public class TrajectoryConfig : ObservableObject
     private bool _gradient = true;
     private double[] _color = { 0.0, 1.0, 0.3, 1.0 };
     private bool _hideGhost;
-    private double _maxDistance = 150;
+    private double _maxDistance = 400;
     private bool _accuracy;
     private double _accWidth = 3;
     private double _accOffsetX;
