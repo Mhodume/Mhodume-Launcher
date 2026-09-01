@@ -245,6 +245,7 @@
             <local:PresetsPage    x:Name="PagePresets"    Visibility="Collapsed"/>
             <local:TweaksPage     x:Name="PageTweaks"     Visibility="Collapsed"/>
             <local:FreecamPage    x:Name="PageFreecam"    Visibility="Collapsed"/>
+            <local:CompletionPage x:Name="PageCompletion" Visibility="Collapsed"/>
             <local:NpcPage        x:Name="PageNpcs"       Visibility="Collapsed"/>
             <local:ProfilesPage   x:Name="PageProfiles"   Visibility="Collapsed"/>
 

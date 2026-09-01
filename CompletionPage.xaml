@@ -1,0 +1,83 @@
+<UserControl x:Class="Mhodume.CompletionPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Margin="24,16,24,18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" TextWrapping="Wrap" Foreground="{StaticResource Muted}"
+                   FontSize="12" LineHeight="18"
+                   Text="Your progress across every level, read live from the save: whether it is finished, whether its B-side is collected, and your best time on it."/>
+
+        <Border Grid.Row="1" Margin="0,14,0,0" Padding="14,12"
+                Background="{StaticResource PanelAlt}"
+                BorderBrush="{StaticResource Line}" BorderThickness="1">
+            <StackPanel>
+                <TextBlock x:Name="Summary" FontFamily="{StaticResource Mono}"
+                           FontSize="20" FontWeight="Bold" Foreground="{StaticResource Accent}"
+                           Text="— / — levels finished"/>
+                <TextBlock x:Name="Detail" Margin="0,4,0,0" FontSize="12"
+                           Foreground="{StaticResource Muted}" Text=""/>
+            </StackPanel>
+        </Border>
+
+        <!-- Column headers -->
+        <Grid Grid.Row="2" Margin="6,14,6,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="90"/>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="70"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="LEVEL" Style="{StaticResource Label}" Margin="0"/>
+            <TextBlock Grid.Column="1" Text="BEST" Style="{StaticResource Label}" Margin="0"/>
+            <TextBlock Grid.Column="2" Text="DONE" Style="{StaticResource Label}" Margin="0"
+                       HorizontalAlignment="Center"/>
+            <TextBlock Grid.Column="3" Text="B-SIDE" Style="{StaticResource Label}" Margin="0"
+                       HorizontalAlignment="Center"/>
+        </Grid>
+
+        <Border Grid.Row="3" Margin="0,6,0,0" Background="{StaticResource Panel}"
+                BorderBrush="{StaticResource Line}" BorderThickness="1" Padding="6">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl x:Name="MapList">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="10,6" Margin="2,1"
+                                    BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="90"/>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="70"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Display}"
+                                               FontSize="13" VerticalAlignment="Center"
+                                               TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Best}"
+                                               FontFamily="{StaticResource Mono}" FontSize="12.5"
+                                               Foreground="{StaticResource Muted}"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding Finished}"
+                                               FontSize="14" FontWeight="Bold"
+                                               Foreground="{StaticResource Accent}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="3" Text="{Binding BSide}"
+                                               FontSize="14" FontWeight="Bold"
+                                               Foreground="{StaticResource Accent}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</UserControl>
