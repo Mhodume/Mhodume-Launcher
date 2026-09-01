@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -5,18 +6,32 @@ namespace Mhodume;
 
 public partial class TweaksPage : UserControl
 {
-    public TweaksPage() => InitializeComponent();
+    /// <summary>One entry in the level dropdown: what the mod loads, what you read.</summary>
+    public record LevelItem(string Asset, string Display);
+
+    public TweaksPage()
+    {
+        InitializeComponent();
+        LevelBox.ItemsSource = MapNames.All
+            .Select(m => new LevelItem(m.Asset, m.Display))
+            .ToList();
+    }
 
     /// <summary>
-    /// Asks the game to build the current level again.
-    ///
-    /// A counter rather than a flag, so pressing it twice is two loads. The
-    /// mod acts on the number changing; a flag already set says nothing new.
+    /// Jumps straight to a chosen level. This goes through the mod's own goto, so
+    /// it is recognised as where you asked to be — "stay on the level" does not
+    /// fight it, unlike picking a level from the game's own menu.
     /// </summary>
-    private void Reload_Click(object sender, RoutedEventArgs e)
+    private void Go_Click(object sender, RoutedEventArgs e)
     {
         if (DataContext is not TweaksConfig cfg) return;
-        cfg.ReloadRequest++;
-        ReloadSaid.Text = "Asked. The game takes a moment, and the lap counts again after.";
+        if (LevelBox.SelectedItem is not LevelItem item)
+        {
+            GoSaid.Text = "Pick a level first.";
+            return;
+        }
+        cfg.GotoLevel = item.Asset;
+        cfg.GotoRequest++;
+        GoSaid.Text = $"Going to {item.Display} — needs the game running.";
     }
 }

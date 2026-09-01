@@ -24,14 +24,21 @@
             <Border Margin="0,12,0,0" Padding="14,12"
                     Background="{StaticResource PanelAlt}" BorderBrush="{StaticResource Line}" BorderThickness="1">
                 <StackPanel>
-                    <TextBlock Text="Load the level again" FontWeight="SemiBold" FontSize="13"/>
+                    <TextBlock Text="Go to a level" FontWeight="SemiBold" FontSize="13"/>
                     <TextBlock TextWrapping="Wrap" Foreground="{StaticResource Muted}" FontSize="11"
                                Margin="0,6,0,0" LineHeight="17"
-                               Text="A lap you practised on cannot count, and that stays true until the level is built again — switching training off does not undo it, or the protection would mean nothing. This builds it again, so the next run counts, without leaving the game."/>
-                    <Button Content="Load it again" Margin="0,10,0,0"
-                            HorizontalAlignment="Left" Padding="16,7"
-                            Click="Reload_Click"/>
-                    <TextBlock x:Name="ReloadSaid" Text="" Margin="0,8,0,0"
+                               Text="Jump straight to any level, no game menu needed. This goes through the mod, so 'stay on the level' does not fight it — the clean way to switch while looping a level. The game must be running."/>
+                    <Grid Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox Grid.Column="0" x:Name="LevelBox" DisplayMemberPath="Display"
+                                  Height="30" VerticalContentAlignment="Center"/>
+                        <Button Grid.Column="1" Content="Go" Margin="8,0,0,0" Padding="18,7"
+                                Click="Go_Click"/>
+                    </Grid>
+                    <TextBlock x:Name="GoSaid" Text="" Margin="0,8,0,0"
                                Foreground="{StaticResource Accent}" FontSize="11"/>
                 </StackPanel>
             </Border>

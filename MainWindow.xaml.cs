@@ -179,6 +179,10 @@ public partial class MainWindow : Window
             new() { Name = "Tweaks", Page = PageTweaks,
                     Note = "how the game behaves while you practise" },
 
+            new() { Name = "PROGRESS", Group = "PROGRESS" },
+            new() { Name = "NPCs", Page = PageNpcs,
+                    Note = "who you have spoken to, live from your save" },
+
             new() { Name = "APP", Group = "APP" },
             new() { Name = "Profiles", Page = PageProfiles,
                     Note = "every setting at once, saved under a name" },
@@ -365,7 +369,6 @@ public partial class MainWindow : Window
         PageNumber.Text = chosen?.Number ?? "";
         PageTitle.Text = chosen?.Title ?? "";
         PageNote.Text = chosen?.Note ?? "";
-        TrainingNeeded.Visibility = Visibility.Collapsed;
     }
 
     private void RefreshLoaderState()
@@ -527,9 +530,6 @@ public partial class MainWindow : Window
                 GameStatus.Foreground = (Brush)FindResource(
                     status.Map is null ? "Muted" : "Text");
             }
-
-            TrainingBadge.Visibility = running && status.Training
-                ? Visibility.Visible : Visibility.Collapsed;
 
             if (running && !status.Training && status.LapTainted)
             {

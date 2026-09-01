@@ -1,0 +1,63 @@
+<UserControl x:Class="Mhodume.NpcPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Margin="24,16,24,18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" TextWrapping="Wrap" Foreground="{StaticResource Muted}"
+                   FontSize="12" LineHeight="18"
+                   Text="Every talkable NPC in the game, and whether you have spoken to them. Read live from your save while you play — talk to one and it turns off the missing list here within a couple of seconds."/>
+
+        <!-- Totals -->
+        <Border Grid.Row="1" Margin="0,14,0,0" Padding="14,12"
+                Background="{StaticResource PanelAlt}"
+                BorderBrush="{StaticResource Line}" BorderThickness="1">
+            <StackPanel>
+                <TextBlock x:Name="Summary" FontFamily="{StaticResource Mono}"
+                           FontSize="20" FontWeight="Bold" Foreground="{StaticResource Accent}"
+                           Text="— / — NPCs spoken to"/>
+                <TextBlock x:Name="MapsSummary" Margin="0,4,0,0" FontSize="12"
+                           Foreground="{StaticResource Muted}" Text=""/>
+            </StackPanel>
+        </Border>
+
+        <!-- Per-map list -->
+        <Border Grid.Row="2" Margin="0,14,0,0" Background="{StaticResource Panel}"
+                BorderBrush="{StaticResource Line}" BorderThickness="1" Padding="6">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl x:Name="MapList">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="10,7" Margin="2,2"
+                                    BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Display}"
+                                               FontSize="13" VerticalAlignment="Center"
+                                               TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Count}"
+                                               FontFamily="{StaticResource Mono}" FontSize="13"
+                                               VerticalAlignment="Center" Margin="0,0,14,0"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding Missing}"
+                                               FontFamily="{StaticResource Mono}" FontSize="12"
+                                               Foreground="{StaticResource WarnText}"
+                                               VerticalAlignment="Center"
+                                               TextTrimming="CharacterEllipsis"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</UserControl>

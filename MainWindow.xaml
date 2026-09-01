@@ -229,19 +229,6 @@
                                FontFamily="{StaticResource Mono}" FontSize="18"
                                FontWeight="Bold" VerticalAlignment="Center"/>
 
-                    <!-- Beside the name rather than in a panel of its own: it
-                         is a condition of the whole section, not a paragraph
-                         to read once and scroll past. -->
-                    <Border Grid.Column="2" x:Name="TrainingNeeded" Visibility="Collapsed"
-                            Background="{StaticResource WarnFill}"
-                            BorderBrush="{StaticResource Warn}" BorderThickness="1"
-                            Padding="8,2" Margin="14,0,0,0"
-                            VerticalAlignment="Center" HorizontalAlignment="Left"
-                            ToolTip="Press F7 in game. Without it these features do nothing, and any lap they touch stays uncountable until you restart the level.">
-                        <TextBlock Text="NEEDS F7" FontFamily="{StaticResource Mono}"
-                                   FontSize="10" FontWeight="Bold"
-                                   Foreground="{StaticResource WarnText}"/>
-                    </Border>
                     <TextBlock Grid.Column="3" x:Name="PageNote" Text=""
                                FontFamily="{StaticResource Mono}" FontSize="11"
                                Foreground="{StaticResource Muted}"
@@ -256,9 +243,9 @@
             <local:TrajectoryPage x:Name="PageTrajectory" Visibility="Collapsed"/>
             <local:CheckpointsPage x:Name="PageCheckpoints" Visibility="Collapsed"/>
             <local:PresetsPage    x:Name="PagePresets"    Visibility="Collapsed"/>
-            <local:TrainingPage   x:Name="PageTraining"   Visibility="Collapsed"/>
             <local:TweaksPage     x:Name="PageTweaks"     Visibility="Collapsed"/>
             <local:FreecamPage    x:Name="PageFreecam"    Visibility="Collapsed"/>
+            <local:NpcPage        x:Name="PageNpcs"       Visibility="Collapsed"/>
             <local:ProfilesPage   x:Name="PageProfiles"   Visibility="Collapsed"/>
 
             <!-- About is short enough to live inline -->
@@ -379,14 +366,6 @@
                     <TextBlock x:Name="GameStatus" Text=""
                                Foreground="{StaticResource Muted}" FontSize="12"
                                FontFamily="{StaticResource Mono}" VerticalAlignment="Center"/>
-                </Border>
-
-                <Border Grid.Column="3" x:Name="TrainingBadge" Visibility="Collapsed"
-                        Background="{StaticResource Warn}" Padding="14,9"
-                        ToolTip="Training mode is on in game, so this lap will not count">
-                    <TextBlock Text="TRAINING ON" FontFamily="{StaticResource Mono}"
-                               FontSize="11" FontWeight="Bold"
-                               Foreground="{StaticResource Bg}" VerticalAlignment="Center"/>
                 </Border>
 
                 <Border Grid.Column="4" Padding="14,9"
